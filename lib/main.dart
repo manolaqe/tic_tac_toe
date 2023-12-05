@@ -59,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<String> diagonal2 = <String>[];
     counter = 0;
     for (int i = 0; i < _board1.length; i++) {
-      // 02 11 20
       diagonal2.add(_board1[i][_board1.length - i - 1]);
     }
 
@@ -129,40 +128,44 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-            child: Text(widget.title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w200, fontSize: 30))),
+          child: Text(
+            widget.title,
+            style: const TextStyle(fontWeight: FontWeight.w200, fontSize: 30),
+          ),
+        ),
       ),
       body: Center(
         child: GridView.count(
           crossAxisCount: 3,
-          children: List<Widget>.generate(9, (int index) {
-            final int row = index ~/ _board1[0].length;
-            final int col = index % _board1[0].length;
-            final String value = _board1[row][col];
+          children: List<Widget>.generate(
+            9,
+            (int index) {
+              final int row = index ~/ _board1[0].length;
+              final int col = index % _board1[0].length;
+              final String value = _board1[row][col];
 
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (move.isEven) {
-                    _board1[row][col] = 'X';
-                    move++;
-                  } else {
-                    _board1[row][col] = '0';
-                    move++;
-                  }
-                });
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (move.isEven) {
+                      _board1[row][col] = 'X';
+                      move++;
+                    } else {
+                      _board1[row][col] = '0';
+                      move++;
+                    }
+                  });
 
-                final String winner = _checkWinner();
+                  final String winner = _checkWinner();
 
-                if (winner != '') {
-                  showDialog<Widget>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Winner is $winner'),
-                        actions: <Widget>[
-                          TextButton(
+                  if (winner != '') {
+                    showDialog<Widget>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Winner is $winner'),
+                          actions: <Widget>[
+                            TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                                 setState(() {
@@ -174,28 +177,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                   move = 0;
                                 });
                               },
-                              child: const Text('Play Again'))
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 2)),
-                child: Center(
-                  child: Text(
-                    value,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 50,
-                        fontWeight: FontWeight.w200),
+                              child: const Text('Play Again'),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  child: Center(
+                    child: Text(
+                      value,
+                      style: const TextStyle(color: Colors.white, fontSize: 50, fontWeight: FontWeight.w200),
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          ),
         ),
       ),
     );
